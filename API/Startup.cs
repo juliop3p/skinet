@@ -1,3 +1,4 @@
+using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,12 @@ namespace API
       // Injecting the repository
       services.AddScoped<IProductRepository, ProductRepository>();
 
+      // Injecting the Generic Repository
+      services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+      // Injecting AutoMapper
+      services.AddAutoMapper(typeof(MappingProfiles));
+
       services.AddControllers();
       services.AddSwaggerGen(c =>
       {
@@ -48,6 +55,9 @@ namespace API
       app.UseHttpsRedirection();
 
       app.UseRouting();
+
+      // Serve Statis Files Config
+      app.UseStaticFiles();
 
       app.UseAuthorization();
 
