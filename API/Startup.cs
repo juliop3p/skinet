@@ -1,3 +1,4 @@
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,9 @@ namespace API
       // DB Connection
       services.AddDbContext<StoreContext>(x =>
         x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+
+      // Injecting the repository
+      services.AddScoped<IProductRepository, ProductRepository>();
 
       services.AddControllers();
       services.AddSwaggerGen(c =>
