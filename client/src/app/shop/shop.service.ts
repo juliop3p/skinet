@@ -3,16 +3,16 @@ import { IType } from './../shared/models/productType';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { IPagination } from '../shared/models/pagination';
 import { IBrand } from './../shared/models/brand';
 import { IProduct } from '../shared/models/product';
+import { environment } from './../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
