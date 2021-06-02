@@ -1,7 +1,9 @@
 using API.Extensions;
 using API.Helpers;
 using API.Middleware;
+using Core.Entities.Identity;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +24,15 @@ namespace API
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      // DB Connection
+      // DB Connection App
       services.AddDbContext<StoreContext>(x =>
         x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
+
+      // DB Connection Identity
+      services.AddDbContext<AppIdentityDbContext>(x =>
+      {
+        x.UseSqlite(_config.GetConnectionString("IdentityConnection"));
+      });
 
       //Setting up Redis
       services.AddSingleton<IConnectionMultiplexer>(c =>
@@ -45,6 +53,7 @@ namespace API
       // Extensions Methods
       services.AddApplicationServices();
       services.AddSwaggerDocumentation();
+      services.AddIdentityServices();
 
       // Cors Configuration
       services.AddCors(opt =>
