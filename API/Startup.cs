@@ -53,7 +53,7 @@ namespace API
       // Extensions Methods
       services.AddApplicationServices();
       services.AddSwaggerDocumentation();
-      services.AddIdentityServices();
+      services.AddIdentityServices(_config);
 
       // Cors Configuration
       services.AddCors(opt =>
@@ -79,6 +79,9 @@ namespace API
 
       // Serve Statis Files Config
       app.UseStaticFiles();
+
+      // Config JWT Bearer ** must be after UseAuthorization() **
+      app.UseAuthentication();
 
       app.UseAuthorization();
 
