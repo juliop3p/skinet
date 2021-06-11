@@ -4,6 +4,7 @@ import { TestErrorComponent } from './core/test-error/test-error.component';
 import { HomeComponent } from './home/home.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -40,6 +41,7 @@ const routes: Routes = [
   },
   {
     path: 'checkout',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./checkout/checkout.module').then((mod) => mod.CheckoutModule),
     data: { breadcrumb: 'Checkout' },
