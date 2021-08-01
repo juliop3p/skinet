@@ -24,6 +24,12 @@ namespace API.Extensions
       // Injecting the Generic Repository
       services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
+      // Injecting the Order Service
+      services.AddScoped<IOrderService, OrderService>();
+
+      // Injecting the UnitOfWork (UoW)
+      services.AddScoped<IUnitOfWork, UnitOfWork>();
+
       services.Configure<ApiBehaviorOptions>(options =>
       {
         options.InvalidModelStateResponseFactory = ActionContext =>
