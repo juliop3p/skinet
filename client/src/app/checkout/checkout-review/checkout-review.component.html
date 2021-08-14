@@ -11,7 +11,11 @@
   <button class="btn btn-outline-primary" cdkStepperPrevious>
     <i class="fa fa-angle-left"></i> Back to Review
   </button>
-  <button class="btn btn-primary" cdkStepperNext>
-    Submit Order <i class="fa fa-angle-right"></i>
+  <button
+    class="btn btn-primary"
+    (click)="createPaymentIntent()"
+    cdkStepperNext
+  >
+    Go to Payment <i class="fa fa-angle-right"></i>
   </button>
 </div>

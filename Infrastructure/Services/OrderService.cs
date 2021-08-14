@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
+using Core.Specifications;
 
 namespace Infrastructure.Services
 {
@@ -11,8 +12,11 @@ namespace Infrastructure.Services
   {
     private readonly IBasketRepository _basketRepository;
     private readonly IUnitOfWork _unitOfWork;
-    public OrderService(IBasketRepository basketRepository, IUnitOfWork unitOfWork)
+    private readonly IPaymentService _paymentService;
+
+    public OrderService(IBasketRepository basketRepository, IUnitOfWork unitOfWork, IPaymentService paymentService)
     {
+      _paymentService = paymentService;
       _unitOfWork = unitOfWork;
       _basketRepository = basketRepository;
     }
@@ -38,8 +42,17 @@ namespace Infrastructure.Services
       // calculate subtotal
       var subtotal = items.Sum(item => item.Price * item.Quantity);
 
+      // check to see if order exists
+      var spec = new OrderByPaymentIntentIdSpecification(basket.PaymentIntentId);
+      var existingOrder = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+      if (existingOrder != null)
+      {
+        _unitOfWork.Repository<Order>().Delete(existingOrder);
+      }
+
       // create order
-      var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
+      var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal, basket.PaymentIntentId);
 
       _unitOfWork.Repository<Order>().Add(order);
 
@@ -47,9 +60,6 @@ namespace Infrastructure.Services
       var result = await _unitOfWork.Complete();
 
       if (result <= 0) return null;
-
-      // delete basket
-      await _basketRepository.DeleteBasketAsync(basketId);
 
       // return order
       return order;

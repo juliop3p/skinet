@@ -18,6 +18,9 @@ namespace API.Extensions
       // Injecting the repository
       services.AddScoped<IProductRepository, ProductRepository>();
 
+      // Injecting the payment service
+      services.AddScoped<IPaymentService, PaymentService>();
+
       // Injecting Basket Repository
       services.AddScoped<IBasketRepository, BasketRepository>();
 
