@@ -1,7 +1,7 @@
 import { Pagination } from './../shared/models/pagination';
 import { ShopParams } from './../shared/models/shopParams';
 import { IType } from './../shared/models/productType';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { IPagination } from '../shared/models/pagination';

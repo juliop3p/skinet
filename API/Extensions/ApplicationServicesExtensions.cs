@@ -12,6 +12,9 @@ namespace API.Extensions
   {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+      // Injecting Caching service
+      services.AddSingleton<IResponseCacheService, ResponseCacheService>();
+
       // Injecting Token service
       services.AddScoped<ITokenService, TokenService>();
 
